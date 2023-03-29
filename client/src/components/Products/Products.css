@@ -1,0 +1,78 @@
+.container {
+  /* border: 1px solid red; */
+  width: 1150px;
+  margin: auto;
+  /* height: 1200px; */
+  display: flex;
+  flex-direction: row;
+}
+
+body div {
+  /* border: 1px solid black; */
+}
+
+.for-img {
+  position: relative;
+}
+
+.for-img span {
+  width: 50px;
+  height: 50px;
+  background-color: black;
+  border-radius: 50%;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: azure;
+  text-align: center;
+  padding: 2px;
+}
+
+.left-col {
+  height: 500px;
+  width: 270px;
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+.right-col {
+  /* height: 500px; */
+  width: 930px;
+  box-sizing: border-box;
+}
+
+.left-col-options td {
+  height: 30px;
+  text-align: left;
+  /* border-bottom: 1px solid rgb(152, 157, 161); */
+}
+
+.top-input-col {
+  /* border: 1px solid deeppink; */
+  padding-left: 15px;
+}
+.top-input-col select {
+  width: 160px;
+  height: 26px;
+}
+.top-input-col td {
+  padding: 5px;
+}
+
+.bottom-products {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 270px);
+  gap: 25px;
+}
+
+.bottom-products > div {
+  height: 400px;
+  /* border: 1px solid rgb(252, 61, 3); */
+  font-size: 12px;
+}
+
+.for-img > img {
+  width: 260px;
+  height: 350px;
+}

@@ -1,0 +1,155 @@
+/* ***************** Navbar ******************* */
+.cart-navbar {
+  /* margin-top: 10px; */
+  padding: 10px;
+  height: 50px;
+  background-color: #f4f4f4;
+  font-size: 28px;
+}
+
+.cart-navbar > div {
+  /* width: 1100px; */
+  /* border: 1px solid red; */
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  color: #adadad;
+  align-items: center;
+}
+
+.icon-in-navbar {
+  /* border: 1px solid red; */
+  margin-left: 280px;
+  margin-right: 280px;
+  display: flex;
+  flex-direction: row;
+  gap: 50px;
+}
+
+.guest-logo {
+  display: flex;
+  flex-direction: row;
+  font-size: small;
+  align-items: center;
+  gap: 2px;
+}
+
+.my-logo {
+  width: 150px;
+}
+/* *************** content ******************** */
+
+.red-clr-box {
+  border: 2px solid rgb(252, 100, 134);
+  width: 320px;
+  margin: auto;
+  padding: 10px;
+}
+
+.main-content {
+  /* border: 1px solid red; */
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+}
+
+.left-side {
+  /* border: 1px solid black; */
+  /* height: 500px; */
+  padding: 20px;
+}
+
+.right-side {
+  /* border: 1px solid black; */
+  height: 500px;
+  padding: 10px;
+}
+
+.donation {
+  display: flex;
+  flex-direction: row;
+}
+.donation input {
+  width: 20px;
+  height: 20px;
+}
+
+table {
+  width: 100%;
+
+  text-align: center;
+}
+
+tr {
+  height: 40px;
+}
+
+.coupon {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.t-data {
+  /* border: 1px solid black; */
+  width: 250px;
+  box-sizing: border-box;
+}
+
+.lefting {
+  text-align: left;
+}
+
+.righting {
+  text-align: right;
+}
+
+.place-order {
+  width: 100%;
+  border-radius: 6px;
+  color: aliceblue;
+  height: 40px;
+  background-color: rgb(252, 100, 134);
+  text-align: center;
+}
+
+/* ************** left items ************ */
+.cart-items > div {
+  /* border: 1px solid orange; */
+  height: 150px;
+}
+
+.details-footer {
+  /* border: 1px solid rgb(87, 69, 24); */
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.delete-icon {
+  margin-left: 330px;
+  font-size: 20px;
+  color: #adadad;
+}
+
+.due-date {
+  margin-bottom: 0px;
+}
+
+.footer-static-img img {
+  margin: auto;
+}
+
+.cart-each-items {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+.cart-each-items > img {
+  width: 70px;
+  height: 80px;
+}
