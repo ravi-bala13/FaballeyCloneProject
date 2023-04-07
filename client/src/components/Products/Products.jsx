@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Products.css";
 import { Navbar } from "../Navbars/Nav/Navbar";
+import axios from "axios";
 
 export const Products = () => {
   const [prodList, setProdList] = useState([]);
@@ -158,12 +159,14 @@ export const Products = () => {
 
   const getProducts = () => {
     try {
-      fetch("https://cryptic-oasis-92145.herokuapp.com/products")
-        .then((res) => res.json())
-        .then((data) => {
-          // console.log("data:", data);
-          setProdList(data);
-          setForSortList(data);
+      axios
+        .get("https://faballeyclonebackend.onrender.com/products", {
+          mode: "no-cors",
+        })
+        .then((response) => {
+          console.log("response:", response);
+          setProdList(response.data);
+          setForSortList(response.data);
         });
     } catch (error) {
       console.log("error:", error);
@@ -282,7 +285,7 @@ export const Products = () => {
 
             <div className="bottom-products">
               {prodList.map((item) => (
-                <Link to={`/products/details/${item._id}`}>
+                <Link to={`/products/details/${item._id}`} key={item._id}>
                   <div className="each-item" key={item._id}>
                     <div className="for-img">
                       <img

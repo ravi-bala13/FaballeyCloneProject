@@ -5,6 +5,7 @@ import { useParams } from "react-router";
 import { loadData } from "../../utils/localStorage";
 import { Navbar } from "../Navbars/Nav/Navbar";
 import "./ProductDetails.css";
+import axios from "axios";
 // import { axios } from "axios";
 
 export const ProductDetails = () => {
@@ -18,11 +19,19 @@ export const ProductDetails = () => {
 
   const { id } = useParams();
 
-  const getProductDetails = async () => {
-    const response = await fetch(`https://cryptic-oasis-92145.herokuapp.com/productDetail/${id}`);
-    let data = await response.json();
-    // console.log("data:", data);
-    setProduct(data);
+  const getProductDetails = () => {
+    try {
+      axios
+        .get(`https://faballeyclonebackend.onrender.com/productDetail/${id}`, {
+          mode: "no-cors",
+        })
+        .then((response) => {
+          console.log("response:", response);
+          setProduct(response.data);
+        });
+    } catch (error) {
+      console.log("error:", error);
+    }
   };
 
   useEffect(() => {
@@ -34,13 +43,16 @@ export const ProductDetails = () => {
     console.log("userId:", userId);
 
     try {
-      fetch(`https://cryptic-oasis-92145.herokuapp.com/users/updateCart/${userId}`, {
-        method: "PATCH",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(product),
-      })
+      fetch(
+        `https://cryptic-oasis-92145.herokuapp.com/users/updateCart/${userId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(product),
+        }
+      )
         .then((res) => res.json())
         .then((data) => {
           console.log("data:", data);
