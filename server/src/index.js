@@ -5,18 +5,23 @@ const app = express();
 
 app.use(express.json());
 
-app.use(cors());
+const corsOptions = {
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
 
-app.get('/', function (req, res) {
-    return res.redirect('https://faballey-clone.vercel.app/');
+app.use(cors(corsOptions));
+
+app.get("/", function (req, res) {
+  return res.redirect("https://faballey-clone.vercel.app/");
 });
-
 
 const productController = require("./controllers/product.controller");
 const productDetailsController = require("./controllers/productDetails.controller");
 const cartController = require("./controllers/cart.controller");
 const signUp = require("./controllers/user.controller");
-const login = require("./controllers/login.controller")
+const login = require("./controllers/login.controller");
 
 app.use("/products", productController);
 
