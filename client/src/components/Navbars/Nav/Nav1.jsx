@@ -9,8 +9,11 @@ import { Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { getID } from "../../../Redux/action";
 import { saveData } from "../../../utils/localStorage";
+import axios from "axios";
 export const Nav1 = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const backendUrl = "https://faballeyclonebackend.onrender.com";
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -49,7 +52,7 @@ export const Nav1 = () => {
     console.log(formErrors);
     if (Object.keys(formErrors).length === 0 && isSubmit) {
       console.log("here i am getting data", formValues);
-      fetch(`https://cryptic-oasis-92145.herokuapp.com/users`, {
+      fetch(`${backendUrl}/users`, {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify(formValues),
@@ -62,7 +65,8 @@ export const Nav1 = () => {
 
   const handleSubmitss = (e) => {
     e.preventDefault();
-    getData();
+    // getData();
+    login();
     setLoginClick(loginClick + 1);
   };
 
@@ -75,27 +79,76 @@ export const Nav1 = () => {
   const dispatch = useDispatch();
   // **************************************
 
-  const getData = async () => {
-    let res = await fetch(`https://cryptic-oasis-92145.herokuapp.com/users/login`, {
-      method: "POST",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify(formValues),
-    });
-    let r = await res.json();
-    // here i am receiving email, user I'D and password
-    console.log("check email is there or not", r);
-    //   ******************* Bals code ********
-    console.log("user", r._id);
-    saveData("userId", r._id);
+  const login = () => {
+    try {
+      axios
+        .post(`${backendUrl}/users/login`, formValues)
+        .then((res) => {
+          console.log("res", res, res.data);
+          let message = res.data.message;
+          alert(message);
+        })
+        .catch((error) => {
+          let message = error.response.data.message;
+          let errors = error.response.data.errors;
+          if (errors.length > 0) {
+            alert("Invalid Email or Password");
+          } else if (message) {
+            alert(message);
+          }
+        });
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
 
-    dispatch(getID(r._id));
-    console.log("userId:", userId);
-    // **************************************
+  const signup = () => {
+    try {
+      axios
+        .post(`${backendUrl}/users/signup`, formValues)
+        .then((res) => {
+          console.log("res", res, res.data);
+          let message = res.data.message;
+          alert(message);
+        })
+        .catch((error) => {
+          let message = error.response.data.message;
+          let errors = error.response.data.errors;
+          if (errors.length > 0) {
+            alert("Invalid Email or Password");
+          } else if (message) {
+            alert(message);
+          }
+        });
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
 
-    alert("Login sucessfully");
+  const getData = () => {
+    let res = axios
+      .post(`${backendUrl}/users/login`, {
+        body: JSON.stringify(formValues),
+      })
+      .then((res) => {
+        console.log("res", res, res.data);
+        // let r = await res.json();
+        // console.log("res", r);
+        // here i am receiving email, user I'D and password
+        console.log("check email is there or not", res.data);
+        //   ******************* Bals code ********
+        console.log("user", res._id);
+        saveData("userId", res._id);
 
-    setloginSucess(loginSucess + 1);
-    // setNavbar(true);
+        dispatch(getID(res._id));
+        console.log("userId:", userId);
+        // **************************************
+
+        alert("Login sucessfully");
+
+        setloginSucess(loginSucess + 1);
+        // setNavbar(true);
+      });
   };
 
   const validate = (values) => {
@@ -146,7 +199,9 @@ export const Nav1 = () => {
               {" "}
               <MdCardTravel className="inline-block ml-2 text-xl cursor-pointer" />
             </Link> */}
-            <a href="/checkout/cart" className="text-black"><MdCardTravel className="inline-block ml-2 text-xl cursor-pointer" /></a>
+            <a href="/checkout/cart" className="text-black">
+              <MdCardTravel className="inline-block ml-2 text-xl cursor-pointer" />
+            </a>
           </div>
         </div>
       </div>

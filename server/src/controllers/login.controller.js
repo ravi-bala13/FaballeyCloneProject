@@ -63,7 +63,9 @@ router.post(
     // Find the user with the given email in the database
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res
+        .status(401)
+        .json({ message: "There is no account for this email" });
     }
     // Check if the password is correct using bcrypt
     const passwordMatches = await bcrypt.compare(
