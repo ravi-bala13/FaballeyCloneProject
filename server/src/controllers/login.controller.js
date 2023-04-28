@@ -5,6 +5,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { body, validationResult } = require("express-validator");
 
+const Cart = require("../models/cart.model");
+
 // Define a secret key for JWT token generation
 const secretKey = "mysecretkey";
 
@@ -41,9 +43,18 @@ router.post(
     });
     await user.save();
 
+    // Create a cart instance for a new user and save it to the database
+    const cart = new Cart({
+      userId: user._id,
+    });
+    const result = await cart.save();
+    console.log("cart saved successfully", result);
+
     // Generate a JWT token for the user and send it in the response
     const token = jwt.sign({ userId: user._id }, secretKey);
-    res.status(201).json({ message: "User created successfully", token });
+    res
+      .status(201)
+      .json({ message: "User created successfully", token, userId: user._id });
   }
 );
 
@@ -78,7 +89,9 @@ router.post(
 
     // Generate a JWT token for the user and send it in the response
     const token = jwt.sign({ userId: user._id }, secretKey);
-    res.status(200).json({ message: "Login successful", token });
+    res
+      .status(200)
+      .json({ message: "Login successful", token, userId: user._id });
   }
 );
 
