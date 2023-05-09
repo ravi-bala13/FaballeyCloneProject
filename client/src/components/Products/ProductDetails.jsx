@@ -12,6 +12,8 @@ export const ProductDetails = () => {
   const userId = useSelector((state) => state.userId);
   console.log("userId:", userId);
 
+  const backendUrl = "https://faballeyclonebackend.onrender.com";
+
   const [product, setProduct] = useState({
     image: [],
   });
@@ -22,7 +24,7 @@ export const ProductDetails = () => {
   const getProductDetails = () => {
     try {
       axios
-        .get(`https://faballeyclonebackend.onrender.com/productDetail/${id}`, {
+        .get(`${backendUrl}/productDetail/${id}`, {
           mode: "no-cors",
         })
         .then((response) => {
@@ -42,17 +44,19 @@ export const ProductDetails = () => {
     let userId = loadData("userId");
     console.log("userId:", userId);
 
+    let body = {
+      productId: product._id,
+    };
+    console.log("body:", body);
+
     try {
-      fetch(
-        `https://cryptic-oasis-92145.herokuapp.com/users/updateCart/${userId}`,
-        {
-          method: "PATCH",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify(product),
-        }
-      )
+      fetch(`${backendUrl}/cart/${userId}`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(body),
+      })
         .then((res) => res.json())
         .then((data) => {
           console.log("data:", data);

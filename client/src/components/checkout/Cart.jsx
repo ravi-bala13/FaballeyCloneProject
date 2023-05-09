@@ -9,7 +9,7 @@ import { loadData } from "../../utils/localStorage";
 export const Cart = () => {
   const [cartList, setCartList] = useState([]);
   console.log("cartList:", cartList);
-
+  const backendUrl = "https://faballeyclonebackend.onrender.com";
   const [name, setName] = useState("");
 
   const price = find_price();
@@ -32,14 +32,15 @@ export const Cart = () => {
 
   const getProducts = () => {
     try {
-      fetch(`https://cryptic-oasis-92145.herokuapp.com/users/${userId}`)
+      fetch(`${backendUrl}/cart/${userId}`)
         .then((res) => res.json())
         .then((data) => {
-          console.log("data:", data.cartItems);
-          let tem = data.email.split("@");
-          console.log("tem:", tem);
-          setName(tem[0]);
-          setCartList(data.cartItems);
+          console.log("data:", data[0]);
+          console.log("data:", data[0].products);
+          // let tem = data.email.split("@");
+          // console.log("tem:", tem);
+          // setName(tem[0]);
+          setCartList(data[0].products);
         });
     } catch (error) {
       console.log("error:", error);
@@ -145,7 +146,11 @@ export const Cart = () => {
               </table>
             </div>
 
-            <button className="place-order"><a href="/shipping" className="text-white">Place Order</a> </button>
+            <button className="place-order">
+              <a href="/shipping" className="text-white">
+                Place Order
+              </a>{" "}
+            </button>
           </div>
           <br />
           <p>Estimated Delivery Time</p>

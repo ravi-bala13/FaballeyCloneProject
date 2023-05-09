@@ -7,9 +7,10 @@ import "antd/dist/antd.min.css";
 import React, { useState, useEffect } from "react";
 import { Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { getID } from "../../../Redux/action";
+import { getID, setID } from "../../../Redux/action";
 import { saveData } from "../../../utils/localStorage";
 import axios from "axios";
+import { login, signup } from "../../Functions/login_signup";
 export const Nav1 = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -39,34 +40,37 @@ export const Nav1 = () => {
     setFormValues({ ...formValues, [name]: value });
   };
 
+  // Signup submit
   const handleSubmit = (e) => {
     e.preventDefault();
     setFormErrors(validate(formValues));
     setIsSubmit(true);
+    signup(formValues);
+    setIsModalVisible(false);
   };
   const [loginSucess, setloginSucess] = useState(0);
 
   const [loginClick, setLoginClick] = useState(0);
 
-  useEffect(() => {
-    console.log(formErrors);
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-      console.log("here i am getting data", formValues);
-      fetch(`${backendUrl}/users`, {
-        method: "POST",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify(formValues),
-      });
-      setIsModalVisible(false);
-      setLoginClick(loginClick + 1);
-    }
-  }, [formErrors]);
+  // useEffect(() => {
+  //   console.log(formErrors);
+  //   if (Object.keys(formErrors).length === 0 && isSubmit) {
+  //     console.log("here i am getting data", formValues);
+  //     fetch(`${backendUrl}/users`, {
+  //       method: "POST",
+  //       headers: { "Content-type": "application/json" },
+  //       body: JSON.stringify(formValues),
+  //     });
+  //     setIsModalVisible(false);
+  //     setLoginClick(loginClick + 1);
+  //   }
+  // }, [formErrors]);
+
   // login
 
   const handleSubmitss = (e) => {
     e.preventDefault();
-    // getData();
-    login();
+    login(formValues);
     setLoginClick(loginClick + 1);
   };
 
@@ -74,82 +78,36 @@ export const Nav1 = () => {
 
   // const [ChangeNavbar, setNavbar] = useState(false);
   //   ******************* Bals code ********
+  // Accessing redux store
   const userId = useSelector((state) => state.userId);
-
   const dispatch = useDispatch();
   // **************************************
 
-  const login = () => {
-    try {
-      axios
-        .post(`${backendUrl}/users/login`, formValues)
-        .then((res) => {
-          console.log("res", res, res.data);
-          let message = res.data.message;
-          alert(message);
-        })
-        .catch((error) => {
-          let message = error.response.data.message;
-          let errors = error.response.data.errors;
-          if (errors.length > 0) {
-            alert("Invalid Email or Password");
-          } else if (message) {
-            alert(message);
-          }
-        });
-    } catch (error) {
-      console.log("Error", error);
-    }
-  };
+  // const getData = () => {
+  //   let res = axios
+  //     .post(`${backendUrl}/users/login`, {
+  //       body: JSON.stringify(formValues),
+  //     })
+  //     .then((res) => {
+  //       console.log("res", res, res.data);
+  //       // let r = await res.json();
+  //       // console.log("res", r);
+  //       // here i am receiving email, user I'D and password
+  //       console.log("check email is there or not", res.data);
+  //       //   ******************* Bals code ********
+  //       console.log("user", res._id);
+  //       saveData("userId", res._id);
 
-  const signup = () => {
-    try {
-      axios
-        .post(`${backendUrl}/users/signup`, formValues)
-        .then((res) => {
-          console.log("res", res, res.data);
-          let message = res.data.message;
-          alert(message);
-        })
-        .catch((error) => {
-          let message = error.response.data.message;
-          let errors = error.response.data.errors;
-          if (errors.length > 0) {
-            alert("Invalid Email or Password");
-          } else if (message) {
-            alert(message);
-          }
-        });
-    } catch (error) {
-      console.log("Error", error);
-    }
-  };
+  //       dispatch(getID(res._id));
+  //       console.log("userId:", userId);
+  //       // **************************************
 
-  const getData = () => {
-    let res = axios
-      .post(`${backendUrl}/users/login`, {
-        body: JSON.stringify(formValues),
-      })
-      .then((res) => {
-        console.log("res", res, res.data);
-        // let r = await res.json();
-        // console.log("res", r);
-        // here i am receiving email, user I'D and password
-        console.log("check email is there or not", res.data);
-        //   ******************* Bals code ********
-        console.log("user", res._id);
-        saveData("userId", res._id);
+  //       alert("Login sucessfully");
 
-        dispatch(getID(res._id));
-        console.log("userId:", userId);
-        // **************************************
-
-        alert("Login sucessfully");
-
-        setloginSucess(loginSucess + 1);
-        // setNavbar(true);
-      });
-  };
+  //       setloginSucess(loginSucess + 1);
+  //       // setNavbar(true);
+  //     });
+  // };
 
   const validate = (values) => {
     const errors = {};
@@ -343,7 +301,7 @@ export const Nav1 = () => {
               </div>
             </form>
             <div className="w-full justify-center ml-16 mt-4">
-              <h5 className="inline-block ml-28">Or continue with</h5>
+              <h5 className="inline-block ml-28">Or continue with</h5>  
             </div>
             <div className="w-full flex justify-evenly mt-4">
               <div className="w-5/12">
