@@ -18,6 +18,12 @@ export const signup = (formValues) => {
         let message = res.data.message;
         alert(message);
         saveData("userId", res.data.userId);
+
+        let tem = formValues.email.split("@");
+        console.log("tem:", tem);
+        saveData("userName", tem[0]); //saving name in local storage
+        // settiing  loginSuccess to true to make the login box hide
+        // setLoginSuccess(1);
       })
       .catch((error) => {
         let message = error.response.data.message;
@@ -33,7 +39,7 @@ export const signup = (formValues) => {
   }
 };
 
-export const login = (formValues) => {
+export const login = (formValues, setLoginSuccess) => {
   try {
     axios
       .post(`${backendUrl}/users/login`, formValues)
@@ -43,6 +49,12 @@ export const login = (formValues) => {
         alert(message);
         console.log("setting id", res.data.userId);
         saveData("userId", res.data.userId);
+
+        let tem = formValues.email.split("@");
+        console.log("tem:", tem);
+        saveData("userName", tem[0]); //saving name in local storage
+        // settiing  loginSuccess to true to make the login box hide
+        setLoginSuccess(1);
         // dispatch(setID(res.data.userId));
       })
       .catch((error) => {

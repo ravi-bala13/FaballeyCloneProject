@@ -8,8 +8,10 @@ import { MdPayment } from "react-icons/md";
 
 import Faballeynav2 from "../Navbars/images/faballey2ndnavbar.png";
 import { useSelector } from "react-redux";
+import { loadData } from "../../utils/localStorage";
 
 export const CartNavbar = () => {
+  const userName = loadData("userName");
   const token = useSelector((state) => state.token);
 
   return (
@@ -24,7 +26,7 @@ export const CartNavbar = () => {
         </div>
         <div className="guest-logo">
           <FaUserAlt />
-          <span>Guest</span>
+          <span>{userName}</span>
         </div>
       </div>
     </div>

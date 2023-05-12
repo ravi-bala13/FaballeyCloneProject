@@ -4,13 +4,12 @@ import React from "react";
 import { MdDelete } from "react-icons/md";
 import { BsFillPlusCircleFill } from "react-icons/bs";
 import { useState } from "react";
-import { loadData } from "../../utils/localStorage";
+import { loadData, saveData } from "../../utils/localStorage";
 
 export const Cart = () => {
   const [cartList, setCartList] = useState([]);
   console.log("cartList:", cartList);
   const backendUrl = "https://faballeyclonebackend.onrender.com";
-  const [name, setName] = useState("");
 
   const price = find_price();
   console.log("price:", price);
@@ -20,7 +19,7 @@ export const Cart = () => {
     for (let i = 0; i < cartList.length; i++) {
       sum += +cartList[i].price;
     }
-    return sum;
+    return Math.floor(sum);
   }
 
   const userId = loadData("userId");
@@ -37,9 +36,7 @@ export const Cart = () => {
         .then((data) => {
           console.log("data:", data[0]);
           console.log("data:", data[0].products);
-          // let tem = data.email.split("@");
-          // console.log("tem:", tem);
-          // setName(tem[0]);
+
           setCartList(data[0].products);
         });
     } catch (error) {

@@ -8,11 +8,18 @@ import React, { useState, useEffect } from "react";
 import { Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { getID, setID } from "../../../Redux/action";
-import { saveData } from "../../../utils/localStorage";
+import {
+  clearLocalStorage,
+  loadData,
+  saveData,
+} from "../../../utils/localStorage";
 import axios from "axios";
 import { login, signup } from "../../Functions/login_signup";
 export const Nav1 = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const userName = loadData("userName");
+  console.log("userName:", userName);
 
   const backendUrl = "https://faballeyclonebackend.onrender.com";
 
@@ -70,7 +77,7 @@ export const Nav1 = () => {
 
   const handleSubmitss = (e) => {
     e.preventDefault();
-    login(formValues);
+    login(formValues, setloginSucess);
     setLoginClick(loginClick + 1);
   };
 
@@ -145,13 +152,21 @@ export const Nav1 = () => {
           <div className="text-xs font-medium mt-2 float-right mr-6">
             <p className="inline-block cursor-pointer">
               Track Order | Gift Cards |{" "}
-              <span
-                onClick={() => setLoginBtn(true)}
-                onDoubleClick={() => setloginSucess(0)}
-              >
-                Login
-              </span>{" "}
-              | <span onClick={showModal}>Sign up</span>
+              {userName ? (
+                <p>
+                  {userName} | <span onClick={clearLocalStorage}>Logout</span>
+                </p>
+              ) : (
+                <>
+                  <span
+                    onClick={() => setLoginBtn(true)}
+                    onDoubleClick={() => setloginSucess(0)}
+                  >
+                    Login
+                  </span>{" "}
+                  | <span onClick={showModal}>Sign up</span>
+                </>
+              )}
             </p>
             {/* <Link to={"/checkout/cart"}>
               {" "}
@@ -301,7 +316,7 @@ export const Nav1 = () => {
               </div>
             </form>
             <div className="w-full justify-center ml-16 mt-4">
-              <h5 className="inline-block ml-28">Or continue with</h5>  
+              <h5 className="inline-block ml-28">Or continue with</h5>
             </div>
             <div className="w-full flex justify-evenly mt-4">
               <div className="w-5/12">

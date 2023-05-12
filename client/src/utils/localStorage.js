@@ -10,8 +10,13 @@ function loadData(key) {
   }
 }
 
+function clearLocalStorage() {
+  alert("Log out successfully");
+  localStorage.clear();
+}
+
 function saveData(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
 }
 
-export { loadData, saveData };
+export { loadData, saveData, clearLocalStorage };
