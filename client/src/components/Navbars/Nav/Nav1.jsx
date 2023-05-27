@@ -5,6 +5,7 @@ import Indya from "../images/indya.png";
 import "antd/dist/antd.min.css";
 // import { Input } from "antd";
 import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { getID, setID } from "../../../Redux/action";
@@ -15,11 +16,13 @@ import {
 } from "../../../utils/localStorage";
 import axios from "axios";
 import { login, signup } from "../../Functions/login_signup";
+import Login from "../Login";
+import Signup from "../Signup";
 export const Nav1 = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const userName = loadData("userName");
-  console.log("userName:", userName);
+  const [isLoading, setIsLoading] = useState(false);
 
   const backendUrl = "https://faballeyclonebackend.onrender.com";
 
@@ -52,7 +55,7 @@ export const Nav1 = () => {
     e.preventDefault();
     setFormErrors(validate(formValues));
     setIsSubmit(true);
-    signup(formValues);
+    signup(formValues, setIsLoading);
     setIsModalVisible(false);
   };
   const [loginSucess, setloginSucess] = useState(0);
@@ -77,17 +80,16 @@ export const Nav1 = () => {
 
   const handleSubmitss = (e) => {
     e.preventDefault();
-    login(formValues, setloginSucess);
+    login(formValues, setloginSucess, setIsLoading);
     setLoginClick(loginClick + 1);
   };
 
   const [loginBtn, setLoginBtn] = useState(false);
 
-  // const [ChangeNavbar, setNavbar] = useState(false);
   //   ******************* Bals code ********
-  // Accessing redux store
-  const userId = useSelector((state) => state.userId);
-  const dispatch = useDispatch();
+  // // Accessing redux store
+  // const userId = useSelector((state) => state.userId);
+  // const dispatch = useDispatch();
   // **************************************
 
   // const getData = () => {
@@ -134,6 +136,12 @@ export const Nav1 = () => {
     return errors;
   };
 
+  const navigate = useNavigate();
+  const logout = () => {
+    clearLocalStorage();
+    navigate("/home");
+  };
+
   return (
     <>
       <div className="w-full h-10 border border-blue-50 flex">
@@ -150,11 +158,11 @@ export const Nav1 = () => {
         </div>
         <div className="w-2/6 border border-white">
           <div className="text-xs font-medium mt-2 float-right mr-6">
-            <p className="inline-block cursor-pointer">
-              Track Order | Gift Cards |{" "}
+            <p className="inline-block cursor-pointer flex">
+              <p>Track Order | Gift Cards | &nbsp;</p>
               {userName ? (
                 <p>
-                  {userName} | <span onClick={clearLocalStorage}>Logout</span>
+                  {userName} | <span onClick={logout}>Logout</span>
                 </p>
               ) : (
                 <>
@@ -162,186 +170,44 @@ export const Nav1 = () => {
                     onClick={() => setLoginBtn(true)}
                     onDoubleClick={() => setloginSucess(0)}
                   >
-                    Login
-                  </span>{" "}
-                  | <span onClick={showModal}>Sign up</span>
+                    Login&nbsp;
+                  </span>
+                  | <span onClick={showModal}> &nbsp; Sign up </span>
                 </>
-              )}
+              )}{" "}
+              <Link to={"/checkout/cart"}>
+                <MdCardTravel className="inline-block ml-2 text-xl cursor-pointer" />
+              </Link>
             </p>
-            {/* <Link to={"/checkout/cart"}>
-              {" "}
+
+            {/* <a href="/checkout/cart" className="text-black">
               <MdCardTravel className="inline-block ml-2 text-xl cursor-pointer" />
-            </Link> */}
-            <a href="/checkout/cart" className="text-black">
-              <MdCardTravel className="inline-block ml-2 text-xl cursor-pointer" />
-            </a>
+            </a> */}
           </div>
         </div>
       </div>
       {/* sign up */}
-      <Modal
-        title="SIGNUP"
-        visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        cancelButtonProps={{ style: { display: "none" } }}
-        okButtonProps={{ style: { display: "none" } }}
-      >
-        <div className="w-full py-8">
-          <div className="w-11/12 ml-2">
-            {/* signUp form */}
-            <form onSubmit={handleSubmit}>
-              <label>
-                <h4 className="font-bold ml-12">for a quicker checkout</h4>
-              </label>
-              <div className="w-full m-auto">
-                <div className="w-11/12 m-auto">
-                  <input
-                    className="w-full h-10 border border-black"
-                    type="text"
-                    name="email"
-                    placeholder="Enter Your Email"
-                    value={formValues.email}
-                    onChange={handleChange}
-                  />
-                </div>
-                <p className="text-red-500">{formErrors.email}</p>
-                <div className="w-11/12 m-auto">
-                  <input
-                    className="w-full h-10 border border-black"
-                    type="password"
-                    name="password"
-                    placeholder="Enter Your Password"
-                    value={formValues.password}
-                    onChange={handleChange}
-                  />
-                </div>
-                <p className="text-red-500">{formErrors.password}</p>
-                <button
-                  className="w-11/12 py-2 border border-pink-600 bg-pink-600 font-bold text-white"
-                  style={{ marginLeft: "18px" }}
-                >
-                  CONTINUE
-                </button>
-              </div>
-            </form>
-            <div className="w-full justify-center ml-16 mt-4">
-              <h5 className="inline-block ml-28">Or continue with</h5>
-            </div>
-            <div className="w-full flex justify-evenly mt-4">
-              <div className="w-5/12">
-                <img
-                  className="cursor-pointer"
-                  src="https://www.faballey.com/images/loginfb.png"
-                  alt=""
-                />
-              </div>
-              <div className="w-5/12">
-                <img
-                  className="cursor-pointer"
-                  src="https://www.faballey.com/images/logingogl.png"
-                  alt="google"
-                />
-              </div>
-            </div>
-            <h5
-              className="inline-block ml-52 mt-6 cursor-pointer"
-              onClick={() => setIsModalVisible(false)}
-            >
-              skip
-            </h5>
-          </div>
-        </div>
-      </Modal>
+      <Signup
+        formValues={formValues}
+        handleChange={handleChange}
+        formErrors={formErrors}
+        handleSubmit={handleSubmit}
+        handleCancel={handleCancel}
+        handleOk={handleOk}
+        setIsModalVisibl={setIsModalVisible}
+        isModalVisible={isModalVisible}
+      />
       {/* login */}
       {loginBtn ? (
-        <div
-          className="w-4/12 py-8 m-auto fixed z-50 bg-white flex flex-col"
-          style={{ marginLeft: "450px", marginTop: "50px" }}
-        >
-          <div className="w-full text-black font-bold text-xl flex justify-between">
-            <div className="ml-4">
-              <h1 className="">Login</h1>
-            </div>
-            <div>
-              <h1
-                className="mr-4 cursor-pointer"
-                onClick={() => setLoginBtn(false)}
-              >
-                X
-              </h1>
-            </div>
-          </div>
-          <hr />
-          <div className="w-11/12 ml-2 mt-10">
-            {/* login form */}
-            <form onSubmit={handleSubmitss}>
-              {loginSucess == 0 ? (
-                <h2 className="text-red-600 ml-8">
-                  Enter correct Email & password
-                </h2>
-              ) : null}
-              <label>
-                <h4 className="font-bold ml-12">for a quicker checkout</h4>
-              </label>
-              <div className="w-full m-auto">
-                <div className="w-11/12 m-auto">
-                  <input
-                    className="w-full h-10 border border-black"
-                    type="text"
-                    name="email"
-                    placeholder="Enter Your Email"
-                    value={formValues.email}
-                    onChange={handleChange}
-                  />
-                </div>
-                <p className="text-red-500">{formErrors.email}</p>
-                <div className="w-11/12 m-auto">
-                  <input
-                    className="w-full h-10 border border-black"
-                    type="password"
-                    name="password"
-                    placeholder="Enter Your Password"
-                    value={formValues.password}
-                    onChange={handleChange}
-                  />
-                </div>
-                <p className="text-red-500">{formErrors.password}</p>
-                <button
-                  className="w-11/12 py-2 border border-pink-600 bg-pink-600 font-bold text-white"
-                  style={{ marginLeft: "18px" }}
-                >
-                  {loginSucess > 0 ? setLoginBtn(false) : null}CONTINUE
-                </button>
-              </div>
-            </form>
-            <div className="w-full justify-center ml-16 mt-4">
-              <h5 className="inline-block ml-28">Or continue with</h5>
-            </div>
-            <div className="w-full flex justify-evenly mt-4">
-              <div className="w-5/12">
-                <img
-                  className="cursor-pointer"
-                  src="https://www.faballey.com/images/loginfb.png"
-                  alt=""
-                />
-              </div>
-              <div className="w-5/12">
-                <img
-                  className="cursor-pointer"
-                  src="https://www.faballey.com/images/logingogl.png"
-                  alt="google"
-                />
-              </div>
-            </div>
-            <h5
-              className="inline-block ml-52 mt-6 cursor-pointer"
-              onClick={() => setLoginBtn(false)}
-            >
-              skip
-            </h5>
-          </div>
-        </div>
+        <Login
+          isLoading={isLoading}
+          setLoginBtn={setLoginBtn}
+          loginSucess={loginSucess}
+          handleSubmitss={handleSubmitss}
+          formValues={formValues}
+          handleChange={handleChange}
+          formErrors={formErrors}
+        />
       ) : null}
     </>
   );

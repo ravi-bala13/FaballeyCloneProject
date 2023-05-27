@@ -9,21 +9,22 @@ const backendUrl = "https://faballeyclonebackend.onrender.com";
 // const userId = useSelector((state) => state.userId);
 // const dispatch = useDispatch();
 
-export const signup = (formValues) => {
+export const signup = (formValues, setIsLoading) => {
   try {
+    setIsLoading(true);
     axios
       .post(`${backendUrl}/users/signup`, formValues)
       .then((res) => {
-        console.log("res", res, res.data);
         let message = res.data.message;
         alert(message);
         saveData("userId", res.data.userId);
 
         let tem = formValues.email.split("@");
-        console.log("tem:", tem);
+
         saveData("userName", tem[0]); //saving name in local storage
         // settiing  loginSuccess to true to make the login box hide
         // setLoginSuccess(1);
+        setIsLoading(false);
       })
       .catch((error) => {
         let message = error.response.data.message;
@@ -33,28 +34,28 @@ export const signup = (formValues) => {
         } else if (message) {
           alert(message);
         }
+        setIsLoading(false);
       });
   } catch (error) {
     console.log("Error", error);
   }
 };
 
-export const login = (formValues, setLoginSuccess) => {
+export const login = (formValues, setLoginSuccess, setIsLoading) => {
   try {
+    setIsLoading(true);
     axios
       .post(`${backendUrl}/users/login`, formValues)
       .then((res) => {
-        console.log("res", res, res.data);
         let message = res.data.message;
         alert(message);
-        console.log("setting id", res.data.userId);
         saveData("userId", res.data.userId);
 
         let tem = formValues.email.split("@");
-        console.log("tem:", tem);
         saveData("userName", tem[0]); //saving name in local storage
         // settiing  loginSuccess to true to make the login box hide
         setLoginSuccess(1);
+        setIsLoading(false);
         // dispatch(setID(res.data.userId));
       })
       .catch((error) => {
@@ -65,8 +66,10 @@ export const login = (formValues, setLoginSuccess) => {
         } else if (message) {
           alert(message);
         }
+        setIsLoading(false);
       });
   } catch (error) {
     console.log("Error", error);
+    setIsLoading(false);
   }
 };

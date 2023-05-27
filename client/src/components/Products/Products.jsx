@@ -3,11 +3,12 @@ import { Link } from "react-router-dom";
 import "./Products.css";
 import { Navbar } from "../Navbars/Nav/Navbar";
 import axios from "axios";
+import { loadingGif } from "../../utils/Constants";
 
 export const Products = () => {
   const [prodList, setProdList] = useState([]);
-  console.log("prodList:", prodList);
   const [forSortList, setForSortList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const left_opitons = [
     "PARTY WEAR",
@@ -159,6 +160,7 @@ export const Products = () => {
 
   const getProducts = () => {
     try {
+      setIsLoading(true);
       axios
         .get("https://faballeyclonebackend.onrender.com/products", {
           mode: "no-cors",
@@ -167,9 +169,11 @@ export const Products = () => {
           console.log("response:", response);
           setProdList(response.data);
           setForSortList(response.data);
+          setIsLoading(false);
         });
     } catch (error) {
       console.log("error:", error);
+      setIsLoading(false);
     }
   };
 
@@ -283,49 +287,53 @@ export const Products = () => {
               </table>
             </div>
 
-            <div className="bottom-products">
-              {prodList.map((item) => (
-                <Link to={`/products/details/${item._id}`} key={item._id}>
-                  <div className="each-item" key={item._id}>
-                    <div className="for-img">
-                      <img
-                        onMouseEnter={() => handleImages(item._id)}
-                        onMouseLeave={() => {
-                          handleImages(item._id);
-                        }}
-                        src={item.status ? item.image[0] : item.image[1]}
-                        alt="no load"
-                      />
-                      {item.price - item.discount >= 2000 ? (
-                        <span className="offer-circle">
-                          50% <br />
-                          OFF
-                        </span>
-                      ) : null}
-                    </div>
-                    <div className="for-details">
-                      <p style={{ margin: "0px", color: "black" }}>
-                        {item.productName}
-                      </p>
-                      <p
-                        style={{
-                          margin: "0px",
+            {isLoading ? (
+              <img src={loadingGif} />
+            ) : (
+              <div className="bottom-products">
+                {prodList.map((item) => (
+                  <Link to={`/products/details/${item._id}`} key={item._id}>
+                    <div className="each-item" key={item._id}>
+                      <div className="for-img">
+                        <img
+                          onMouseEnter={() => handleImages(item._id)}
+                          onMouseLeave={() => {
+                            handleImages(item._id);
+                          }}
+                          src={item.status ? item.image[0] : item.image[1]}
+                          alt="no load"
+                        />
+                        {item.price - item.discount >= 2000 ? (
+                          <span className="offer-circle">
+                            50% <br />
+                            OFF
+                          </span>
+                        ) : null}
+                      </div>
+                      <div className="for-details">
+                        <p style={{ margin: "0px", color: "black" }}>
+                          {item.productName}
+                        </p>
+                        <p
+                          style={{
+                            margin: "0px",
 
-                          fontWeight: "bolder",
-                          color: "rgb(252, 100, 134)",
-                        }}
-                      >
-                        ₹{item.price - item.discount}
-                        {"  "}
-                        <strike style={{ color: "black" }}>
-                          ₹{item.price}
-                        </strike>
-                      </p>
+                            fontWeight: "bolder",
+                            color: "rgb(252, 100, 134)",
+                          }}
+                        >
+                          ₹{item.price - item.discount}
+                          {"  "}
+                          <strike style={{ color: "black" }}>
+                            ₹{item.price}
+                          </strike>
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

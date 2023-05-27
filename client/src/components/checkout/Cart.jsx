@@ -8,7 +8,7 @@ import { loadData, saveData } from "../../utils/localStorage";
 
 export const Cart = () => {
   const [cartList, setCartList] = useState([]);
-  console.log("cartList:", cartList);
+
   const backendUrl = "https://faballeyclonebackend.onrender.com";
 
   const price = find_price();
@@ -53,21 +53,23 @@ export const Cart = () => {
       <div className="main-content w-9/12">
         <div className="left-side w-2/3">
           <div className="top-heading">
-            <h2>My Shopping Bag (1)</h2>
+            <h2>
+              My Shopping Bag ({userId ? cartList.length : "Please login"})
+            </h2>
           </div>
 
-          <div className="cart-items">
+          <div className="cart-items w-full">
             {cartList.map((item) => (
-              <div className="cart-each-items">
+              <div className="cart-each-items w-full ">
                 <img src={item.image[0]} alt="" />
 
                 <div className="each-item-details">
                   <div className="details-top">
                     <div style={{ display: "flex", flexDirection: "row" }}>
-                      <div style={{ width: "500px" }}>
+                      <div style={{ width: "90%" }}>
                         <h2>{item.productName}</h2>
                       </div>
-                      <div style={{ width: "100px" }}>
+                      <div style={{ width: "10%" }}>
                         <h2>₹{price}</h2>
                       </div>
                     </div>

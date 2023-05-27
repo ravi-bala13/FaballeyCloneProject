@@ -26,7 +26,7 @@ export const CartNavbar = () => {
         </div>
         <div className="guest-logo">
           <FaUserAlt />
-          <span>{userName}</span>
+          <span>&nbsp;{userName}</span>
         </div>
       </div>
     </div>
