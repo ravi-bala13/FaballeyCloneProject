@@ -87,10 +87,12 @@ router.post("/:id", async (req, res) => {
 });
 
 // Remove a product from a cart
-router.post("/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const id = req.params.id;
+    console.log("id:", id);
     const productId = req.body.productId;
+    console.log("productId:", productId);
     const result = await Cart.findOneAndUpdate(
       { userId: id },
       { $pull: { products: productId } },

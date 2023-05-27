@@ -5,14 +5,12 @@ import { MdDelete } from "react-icons/md";
 import { BsFillPlusCircleFill } from "react-icons/bs";
 import { useState } from "react";
 import { loadData, saveData } from "../../utils/localStorage";
+import { backendUrl } from "../../utils/Constants";
 
 export const Cart = () => {
   const [cartList, setCartList] = useState([]);
 
-  const backendUrl = "https://faballeyclonebackend.onrender.com";
-
   const price = find_price();
-  console.log("price:", price);
 
   function find_price() {
     let sum = 0;
@@ -23,7 +21,6 @@ export const Cart = () => {
   }
 
   const userId = loadData("userId");
-  console.log("userId:", userId);
 
   useEffect(() => {
     getProducts();
@@ -34,10 +31,33 @@ export const Cart = () => {
       fetch(`${backendUrl}/cart/${userId}`)
         .then((res) => res.json())
         .then((data) => {
-          console.log("data:", data[0]);
-          console.log("data:", data[0].products);
-
+          // console.log("data:", data[0]);
+          // console.log("data:", data[0].products);
           setCartList(data[0].products);
+        });
+    } catch (error) {
+      console.log("error:", error);
+    }
+  };
+
+  const removeProductsFromCart = (productId) => {
+    let temCartList = [...cartList];
+    temCartList = temCartList.filter((item) => item._id != productId);
+    setCartList(temCartList);
+    try {
+      fetch(`${backendUrl}/cart/${userId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          productId: productId,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          // console.log("data:", data);
+          alert("Product removed success fullly");
         });
     } catch (error) {
       console.log("error:", error);
@@ -60,7 +80,7 @@ export const Cart = () => {
 
           <div className="cart-items w-full">
             {cartList.map((item) => (
-              <div className="cart-each-items w-full ">
+              <div key={item._id} className="cart-each-items w-full ">
                 <img src={item.image[0]} alt="" />
 
                 <div className="each-item-details">
@@ -80,7 +100,10 @@ export const Cart = () => {
                     <span>Edit Item</span>
                     <span>Move to wishlist</span>
                     <span>
-                      <MdDelete className="delete-icon" />
+                      <MdDelete
+                        onClick={() => removeProductsFromCart(item._id)}
+                        className="delete-icon"
+                      />
                     </span>
                   </div>
                 </div>
