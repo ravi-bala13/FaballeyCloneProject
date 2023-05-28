@@ -20,7 +20,7 @@ export const Main = () => {
           element={<ProductDetails />}
         ></Route>
         <Route path="/checkout/cart" element={<Cart />}></Route>
-        <Route path="/shipping" element={<Shipping />}></Route>
+        <Route path="/shipping/:total" element={<Shipping />}></Route>
         <Route path="/payment" element={<Payment />}></Route>
         <Route path="*" element={<Home />}></Route>
       </Routes>

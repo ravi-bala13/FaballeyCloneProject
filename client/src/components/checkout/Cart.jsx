@@ -6,13 +6,15 @@ import { BsFillPlusCircleFill } from "react-icons/bs";
 import { useState } from "react";
 import { loadData, saveData } from "../../utils/localStorage";
 import { backendUrl } from "../../utils/Constants";
+import { Link } from "react-router-dom";
 
 export const Cart = () => {
   const [cartList, setCartList] = useState([]);
+  console.log("cartList:", cartList);
 
-  const price = find_price();
+  const totalPrice = findTotalPrice();
 
-  function find_price() {
+  function findTotalPrice() {
     let sum = 0;
     for (let i = 0; i < cartList.length; i++) {
       sum += +cartList[i].price;
@@ -90,7 +92,7 @@ export const Cart = () => {
                         <h2>{item.productName}</h2>
                       </div>
                       <div style={{ width: "10%" }}>
-                        <h2>₹{price}</h2>
+                        <h2>₹{item.price}</h2>
                       </div>
                     </div>
 
@@ -154,25 +156,27 @@ export const Cart = () => {
                   <tr className="border-y-2	">
                     <td>
                       <td className="t-data lefting">Subtotal</td>
-                      <td className="t-data righting">₹{price}</td>
+                      <td className="t-data righting">₹{totalPrice}</td>
                     </td>
                   </tr>
 
                   <tr className="border-y-2	">
                     <td>
                       <td className="t-data lefting">Total</td>
-                      <td className="t-data righting">₹{price}</td>
+                      <td className="t-data righting">₹{totalPrice}</td>
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
 
-            <button className="place-order">
-              <a href="/shipping" className="text-white">
-                Place Order
-              </a>{" "}
-            </button>
+            <Link to={`/shipping/${totalPrice}`}>
+              <button className="place-order ">
+                <a href="#" className="text-white">
+                  Place Order
+                </a>{" "}
+              </button>
+            </Link>
           </div>
           <br />
           <p>Estimated Delivery Time</p>

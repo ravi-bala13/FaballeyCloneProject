@@ -1,3 +1,5 @@
+import { CartNavbar } from "../checkout/CartNavbar";
+
 export const Payment = () => {
   let data;
   const get_data = () => {
@@ -15,6 +17,7 @@ export const Payment = () => {
 
   return (
     <div>
+      <CartNavbar />
       <div id="content_box" className="flex mt-5 mx-auto w-8/12 p-2">
         {/* part first */}
         <div className="w-1/2 mr-6">

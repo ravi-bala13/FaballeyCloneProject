@@ -1,7 +1,10 @@
 import { useEffect } from "react";
 import { useState } from "react";
+import { CartNavbar } from "../checkout/CartNavbar";
+import { useParams } from "react-router";
 
 export const Shipping = () => {
+  const { total } = useParams();
   const [form, setForm] = useState([]);
   const [cart, setCart] = useState([]);
   let id = "61ecefc76b66d6705191455e";
@@ -12,7 +15,9 @@ export const Shipping = () => {
   }, []);
 
   const getProductDetails = async () => {
-    const response = await fetch(`https://cryptic-oasis-92145.herokuapp.com/users/${id}`);
+    const response = await fetch(
+      `https://cryptic-oasis-92145.herokuapp.com/users/${id}`
+    );
     let data = await response.json();
     // console.log("data:", data);
     setCart(data.cartItems);
@@ -38,11 +43,11 @@ export const Shipping = () => {
     localStorage.setItem("shipping", JSON.stringify(final_data));
 
     window.location.href = "/payment";
-
   };
 
   return (
     <div>
+      <CartNavbar />
       <div className="flex mt-5 mx-auto w-9/12 p-2">
         <div className="w-7/12">
           <p className="text-slate-700 text-xl">
@@ -198,12 +203,12 @@ export const Shipping = () => {
           <div className="rounded-sm bg-gray-100 p-4">
             <div className="flex justify-between">
               <p className="text-slate-700">Sub Total:</p>
-              <p>₹ {sum}</p>
+              <p>₹ {total}</p>
             </div>
             <hr></hr>
             <div className="flex justify-between">
               <p className="text-pink-500">Total:</p>
-              <p className="text-pink-500">₹ {sum}</p>
+              <p className="text-pink-500">₹ {total}</p>
             </div>
             <hr></hr>
           </div>
