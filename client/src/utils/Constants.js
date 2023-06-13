@@ -1,5 +1,5 @@
 export const loadingGif =
-  "https://media.tenor.com/guhB4PpjrmUAAAAM/loading-loading-gif.gif";
+  "https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif";
 
 export const backendUrl = "https://faballeyclonebackend.onrender.com";
 

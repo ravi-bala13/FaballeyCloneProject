@@ -1,6 +1,4 @@
 import React from "react";
-import { Modal } from "antd";
-import { loadingGif } from "../../utils/Constants";
 
 export default function Login({
   isLoading,
@@ -13,20 +11,32 @@ export default function Login({
 }) {
   return (
     <div>
-      <div
-        className="w-4/12 py-8 m-auto fixed z-50 bg-white flex flex-col p-4"
-        style={{
-          //   marginLeft: "450px",
-          //   marginTop: "50px",
-          position: "fixed",
-          margin: "auto",
-          left: "33%",
-          top: "150px",
-        }}
-      >
-        {isLoading ? (
-          <img src={loadingGif} />
-        ) : (
+      {isLoading ? (
+        <img
+          style={{
+            //   marginLeft: "450px",
+            //   marginTop: "50px",
+            position: "fixed",
+            margin: "auto",
+            left: "40%",
+            top: "150px",
+            zIndex: 10,
+          }}
+          src={"loading.gif"}
+          alt="No load"
+        />
+      ) : (
+        <div
+          className="w-4/12 py-8 m-auto fixed z-50 bg-white flex flex-col p-4"
+          style={{
+            //   marginLeft: "450px",
+            //   marginTop: "50px",
+            position: "fixed",
+            margin: "auto",
+            left: "33%",
+            top: "150px",
+          }}
+        >
           <>
             <div className="w-full text-black font-bold text-xl flex justify-between ">
               <div className="ml-4">
@@ -111,8 +121,8 @@ export default function Login({
               </div>
             </div>
           </>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
